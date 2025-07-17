@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General Query</title>
+    <!-- Add markdown-it for rendering markdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+    <style>
+        .analysis {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .analysis h2 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Very Simple Database Query</h1>
+    <form method="POST">
+        <input type="text" name="query" placeholder="Type 'movies' to see the first 3 films">
+        <input type="submit" value="Search">
+    </form>
+
+    {% if films %}
+    <div class="results">
+        <h2>Results:</h2>
+        {% if analysis %}
+        <div class="analysis" id="analysis-content">
+            {{ analysis | safe }}
+        </div>
+        <script>
+            // Convert markdown to HTML
+            var md = window.markdownit();
+            var content = document.getElementById('analysis-content').innerHTML;
+            document.getElementById('analysis-content').innerHTML = md.render(content);
+        </script>
+        {% endif %}
+        
+        <h2>Raw Data:</h2>
+        <ul>
+        {% for film in films %}
+            <li>
+                <h3>{{ film.title }}</h3>
+                <p>{{ film.description }}</p>
+                <p>Rating: {{ film.rating }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>
